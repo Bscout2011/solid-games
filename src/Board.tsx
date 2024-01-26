@@ -5,12 +5,12 @@ interface BoardProps {
   boardSize: BoardSize;
 }
 export type Player = "X" | "O";
-export type BoardType = (Player | null)[];
+export type BoardArray = (Player | null)[];
 
-const initBoard = (boardSize: BoardSize): BoardType =>
+const initBoard = (boardSize: BoardSize): BoardArray =>
   Array.from({ length: boardSize ** 2 }, () => null);
 
-export const checkWin = (board: BoardType): boolean => {
+export const checkWin = (board: BoardArray): boolean => {
   const boardSize = Math.sqrt(board.length);
   // winning can be horizontal, vertical, or diagonal
   for (let i = 0; i < boardSize; i++) {
@@ -24,7 +24,6 @@ export const checkWin = (board: BoardType): boolean => {
       }
     }
     if (horizontalWin) {
-      console.log("Horizontal win " + i);
       return true;
     }
   }
@@ -39,7 +38,6 @@ export const checkWin = (board: BoardType): boolean => {
       }
     }
     if (verticalWin) {
-      console.log("Vertical win " + j);
       return true;
     }
   }
@@ -56,7 +54,6 @@ export const checkWin = (board: BoardType): boolean => {
     }
   }
   if (leftDiagonalWin) {
-    console.log("Left diagonal win");
     return true;
   }
 
@@ -72,18 +69,17 @@ export const checkWin = (board: BoardType): boolean => {
     }
   }
   if (rightDiagonalWin) {
-    console.log("Right diagonal win");
     return true;
   }
 
   return false;
 };
 
-const boardFull = (board: BoardType) =>
+const boardFull = (board: BoardArray) =>
   board.filter((x) => x === null).length === 0;
 
 type SquareProps = {
-  value: Player;
+  value: Player | null;
   onSquareClick: () => void;
 };
 
@@ -115,7 +111,6 @@ export function Board(props: BoardProps) {
       newBoard[index] = player;
       const won = checkWin(newBoard);
       if (won) {
-        console.log(newBoard);
         setWinner(player);
         newBoard = initBoard(props.boardSize);
       } else if (boardFull(newBoard)) {
