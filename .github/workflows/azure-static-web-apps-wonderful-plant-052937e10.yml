@@ -19,12 +19,11 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
       - name: Build And Deploy
         id: builddeploy
+        env:
+          PRE_BUILD_COMMAND: npm install -g pnpm
+          BUILD_COMMAND: pnpm install && pnpm run build
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WONDERFUL_PLANT_052937E10 }}
